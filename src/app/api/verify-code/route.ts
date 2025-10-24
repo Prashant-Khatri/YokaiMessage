@@ -11,7 +11,7 @@ export async function POST(request : Request){
             return Response.json({
                 success : false,
                 message : "user not found"
-            },{status : 500})
+            },{status : 401})
         }
         const isCodeValid=user.verifyCode===code
         const isCodeNotExpired=new Date(user.verifyCodeExpiry)> new Date(Date.now())
@@ -21,7 +21,7 @@ export async function POST(request : Request){
             return Response.json({
                 success : true,
                 message : "Account verified successfully"
-            },{status : 400})
+            },{status : 200})
         }
         else if(!isCodeNotExpired){
             return Response.json({
