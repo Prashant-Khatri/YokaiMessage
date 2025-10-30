@@ -7,7 +7,7 @@ import { User } from "next-auth";
 export async function POST(request : Request){
     await dbConnect()
     const session=await getServerSession(authOptions)
-    const user=session?.user
+    const user:User=session?.user as User
 
     if(!session || !session.user){
         return Response.json({

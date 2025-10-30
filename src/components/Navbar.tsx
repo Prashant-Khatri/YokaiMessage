@@ -9,7 +9,8 @@ import { Button } from "./ui/button"
 function Navbar(){
     const {data : session}=useSession()
     const user :User=session?.user as User
-    console.log(user)
+    console.log("Print")
+    console.log(session)
     return (
         <nav className="p-4 md:p-6 shadow-md bg-gray-900 text-white">
         <div className="container mx-auto flex flex-row md:flex-row justify-between items-center">
@@ -21,7 +22,7 @@ function Navbar(){
                 <span className="mr-4">
                 Welcome, {user.username || user.email}
                 </span>
-                <Button onClick={() => signOut()} className="w-full md:w-auto bg-slate-100 text-black cursor-pointer">
+                <Button onClick={() => signOut()} className="w-full md:w-auto bg-slate-100 text-black cursor-pointer" variant={"outline"}>
                 Logout
                 </Button>
             </>

@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import dayjs from "dayjs";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
 import { Message } from "@/models/User.models";
@@ -28,7 +29,6 @@ type MessageCardProps={
     message : Message;
     onMessageDelete : (messageId : string)=> void
 }
-
 function MessageCard({message,onMessageDelete} : MessageCardProps){
     const handleDeleteConfirm =async ()=>{
         const response=await axios.delete(`/api/delete-message/${message._id}`)
@@ -38,17 +38,15 @@ function MessageCard({message,onMessageDelete} : MessageCardProps){
     return (
         <Card>
         <CardHeader>
-            <CardTitle>Card Title</CardTitle>
             <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive"><X className="w-5 h-5"/></Button>
+        <Button variant="destructive" className="w-fit mx-auto">Delete<X className="w-5 h-5"/></Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently this message.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -57,14 +55,13 @@ function MessageCard({message,onMessageDelete} : MessageCardProps){
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-            <CardDescription>Card Description</CardDescription>
-            <CardAction>Card Action</CardAction>
+            {/* <CardDescription>Card Description</CardDescription> */}
         </CardHeader>
         <CardContent>
-            <p>Card Content</p>
+            <p>{message.content}</p>
         </CardContent>
         <CardFooter>
-            <p>Card Footer</p>
+            <p>Received at : {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}</p>
         </CardFooter>
         </Card>
     )

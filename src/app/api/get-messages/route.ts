@@ -19,15 +19,15 @@ export async function GET(request : Request){
     const userId=new mongoose.Types.ObjectId(user?._id);
     try {
         const user=await UserModel.aggregate([
-            {$match : {id : userId}},
+            {$match : {_id : userId}},
             {$unwind : '$messages'},
-            {$sort : {'messages.createdAr':-1}},
-            {$group : {_id : '$_id',messages : {$push : 'messages'}}}
+            {$sort : {'messages.createdAt':-1}},
+            {$group : {_id : '$_id',messages : {$push : '$messages'}}}
         ])
         if(!user || user.length===0){
             return Response.json({
                 success : false,
-                message : "user not found"
+                message : "User not found or No messages"
             },{status : 401})
         }
         return Response.json({

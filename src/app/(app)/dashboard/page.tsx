@@ -66,11 +66,11 @@ function page(){
         }
         fetchMessages()
         fetchAcceptMessage()
-    },[session,setValue,fetchAcceptMessage,fetchMessages])
+    },[session])
 
     const handleSwitchChange=async ()=>{
         try {
-            const response=await axios.post('/api/accept-messages',{
+            const response=await axios.post('/api/accept-message',{
                 acceptMessages : !acceptMessages
             })
             setValue('acceptMessage',!acceptMessages)
@@ -80,6 +80,9 @@ function page(){
             toast.error(axiosError.response?.data.message || "Fail changing messages settings")
         }
     }
+    if(!session || !session.user){
+        return <div>Please login</div>
+    }
 
     const {username}=session?.user as User
     const baseUrl=`${window.location.protocol}//${window.location.host}`
@@ -88,10 +91,6 @@ function page(){
     const copyToClipboard=()=>{
         navigator.clipboard.writeText(profileUrl)
         toast.success("URL Copied")
-    }
-
-    if(!session || !session.user){
-        return <div>Please login</div>
     }
 
     return (
@@ -151,6 +150,7 @@ function page(){
           <p>No messages to display.</p>
         )}
       </div>
+
     </div>
     )
 }
