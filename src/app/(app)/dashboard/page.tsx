@@ -20,13 +20,12 @@ function page(){
     const [isLoading,setIsLoading]=useState(false)
     const [isSwitchLoading,setIsSwitchLoading]=useState(false)
     const handleDeleteMessage=(messageId : string)=>{
-        setMessages(messages.filter(message=>message._id!==messageId))
+      setMessages(messages.filter(message=>message._id!==messageId))
     }
     const {data : session}=useSession()
     const form=useForm({
         resolver : zodResolver(acceptMessageSchema)
     })
-
     const {register,setValue,watch}=form;
     const acceptMessages=watch('acceptMessage')
     const fetchAcceptMessage=async ()=>{
@@ -140,11 +139,12 @@ function page(){
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
           messages.map((message, index) => (
-            <MessageCard
-              key={message._id as string}
+            <div key={message._id as string}>
+              <MessageCard
               message={message}
-              onMessageDelete={handleDeleteMessage}
+              onMessageDelete={handleDeleteMessage} refresh={fetchMessages} username={username}
             />
+            </div>
           ))
         ) : (
           <p>No messages to display.</p>

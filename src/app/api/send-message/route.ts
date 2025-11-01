@@ -3,8 +3,10 @@ import dbConnect from "@/lib/dbConnect";
 import { Message } from "@/models/User.models";
 
 export async function POST(request : Request){
+    console.log("API Called")
     await dbConnect()
-    const {username,content}=await request.json()
+    const {username,content,isAcceptingReply,senderEmail,reply}=await request.json()
+    console.log(content)
     try {
         const user=await UserModel.findOne({username})
         if(!user){
@@ -19,7 +21,7 @@ export async function POST(request : Request){
                 message : "User is not accepting message"
             },{status : 403})
         }
-        const newMessage = {content,createdAt : new Date()}
+        const newMessage = {content,isAcceptingReply,senderEmail,reply}
         user.messages.push(newMessage as Message)
         await user.save()
         return Response.json({

@@ -1,8 +1,12 @@
 import mongoose,{Schema,Document} from "mongoose";
+import { boolean } from "zod";
 
 export interface Message extends Document{
     content : string;
-    createdAt : Date
+    createdAt : Date;
+    isAcceptingReply : boolean;
+    senderEmail : string;
+    reply : string
 }
 
 const messageSchema : Schema<Message> = new Schema({
@@ -14,6 +18,17 @@ const messageSchema : Schema<Message> = new Schema({
         type : Date,
         required : true,
         default : Date.now
+    },
+    isAcceptingReply : {
+        type : Boolean,
+        default : false
+    },
+    senderEmail : {
+        type : String,
+    },
+    reply : {
+        type : String,
+        default : ""
     }
 })
 
