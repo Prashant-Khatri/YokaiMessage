@@ -25,6 +25,7 @@ const messageSchema : Schema<Message> = new Schema({
     },
     senderEmail : {
         type : String,
+        default : ""
     },
     reply : {
         type : String,

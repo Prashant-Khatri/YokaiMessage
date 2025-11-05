@@ -36,32 +36,43 @@ function verifyAccount(){
         }
     }
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Verify Your Account
-          </h1>
-          <p className="mb-4">Enter the verification code sent to your email</p>
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-sm sm:max-w-md md:max-w-lg p-6 sm:p-8 space-y-8 bg-white rounded-lg shadow-md">
+            <div className="text-center">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6">
+                Verify Your Account
+              </h1>
+              <p className="text-sm sm:text-base mb-4">
+                Enter the verification code sent to your email
+              </p>
+            </div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  name="code"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Verification Code</FormLabel>
+                      <Input
+                        placeholder="code"
+                        {...field}
+                        className="text-sm sm:text-base"
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="w-full py-2 sm:py-3 text-sm sm:text-base font-semibold"
+                >
+                  Verify
+                </Button>
+              </form>
+            </Form>
+          </div>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              name="code"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Verification Code</FormLabel>
-                  <Input placeholder="code" {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="">Verify</Button>
-          </form>
-        </Form>
-      </div>
-    </div>
     );
 }
 

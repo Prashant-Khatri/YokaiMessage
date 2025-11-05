@@ -10,7 +10,7 @@ export default function RootLayout({
     const pathname=usePathname()
     const hideNavbar=pathname.startsWith('/u/');
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {
         !hideNavbar && <Navbar/>
       }

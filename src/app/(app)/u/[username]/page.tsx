@@ -11,9 +11,8 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useChat, useCompletion } from '@ai-sdk/react';
 import * as z from "zod"
-import suggestions from "@/suggestions.json"
+import { experimental_useObject as useObject } from '@ai-sdk/react'
 import { Separator } from "@/components/ui/separator";
 import {
   Card,
@@ -26,11 +25,16 @@ import {
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import {motion} from 'framer-motion'
 
 function SendMessagePage({ params }: { params: { username: string } }){
     const [isSubmitting,setIsSubmitting]=useState(false)
-    const [questions,setQuestions]=useState(suggestions)
-    const {messages,sendMessage}=useChat()
+    const initialMessages=[
+        "If you could instantly master any skill, what would it be and why?",
+        "What’s a small thing you do that always brightens your day?",
+        "If you could relive one moment from your past just for the joy of it, which would you choose?"
+    ]
+    const [questions,setQuestions]=useState(initialMessages)
     console.log(params)
     const {username}=params;
     console.log(username)
@@ -47,7 +51,11 @@ function SendMessagePage({ params }: { params: { username: string } }){
     const {watch,formState : {errors},register,setValue}=form;
     const myContent=watch('content')
     const acceptingReply=watch('isAcceptingReply')
-    const onSubmit=async(data : z.infer<typeof messageSchema>)=>{
+    const {object : suggestions,submit,isLoading,error} = useObject({
+      api: '/api/suggest-messages',
+      schema: z.array(z.string()),
+  });
+    const onSubmit=async(data : any)=>{
         console.log("Submitting message for user:", username, data);
         setIsSubmitting(true)
         try {
@@ -81,9 +89,9 @@ function SendMessagePage({ params }: { params: { username: string } }){
         return <div>Loading...</div>;
     }
     return (
-        <div className="w-full min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-black py-12 px-6 flex flex-col items-center">
+        <div className="w-full min-h-screen bg-gray-800 py-12 px-6 flex flex-col items-center">
   <div className="w-full max-w-3xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-lg p-8 space-y-8 transition-all">
-    <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-100">
+    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center md:text-left text-gray-900">
       Public Profile Link
     </h1>
 
@@ -174,11 +182,12 @@ function SendMessagePage({ params }: { params: { username: string } }){
     {/* Suggest Messages Section */}
     <div className="text-center space-y-4">
       <Button
-        onClick={() => sendMessage({ text: '' })}
+        onClick={()=>submit("")}
         className="font-medium shadow-sm hover:shadow-md transition-all"
-        variant="outline"
+        variant="outline" disabled={isLoading}
       >
-        Suggest Message
+        {isLoading ? 'Generating...' : 'Generate Suggestions'}
+        {error && <p className="text-red-500">Error: {error.message}</p>}
       </Button>
       <p className="text-sm text-gray-600 dark:text-gray-400">
         Click on any message below to select it.
@@ -190,21 +199,35 @@ function SendMessagePage({ params }: { params: { username: string } }){
           Messages
         </CardTitle>
         <CardContent className="flex flex-col gap-3 py-4 px-4">
-          {questions.length > 0 ? (
-            questions.map((q, i) => (
-              <Button
+          {suggestions ? (
+            suggestions.map((suggestion, i) => (
+                <motion.button
                 key={i}
-                onClick={() => messageCopyToInput(q)}
-                className="text-sm text-left justify-start whitespace-normal border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-transform hover:scale-[1.02]"
-                variant="outline"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2 }}
+                className="border rounded-md bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-fit px-4 py-2 has-[>svg]:px-3"
+                onClick={()=>messageCopyToInput(suggestion as string)}
               >
-                {q}
-              </Button>
+                {suggestion}
+              </motion.button>
             ))
           ) : (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-              No suggestions yet — click “Suggest Messages” above.
-            </p>
+            isLoading ? (<Loader2 className="animate-spin mx-auto"></Loader2>) : (
+              initialMessages.map((message,i)=>(
+                <motion.button
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2 }}
+                className="border rounded-md bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-fit px-4 py-2 has-[>svg]:px-3"
+                onClick={()=>messageCopyToInput(message as string)}
+              >
+                {message}
+              </motion.button>
+              ))
+            )
+            
           )}
         </CardContent>
       </Card>

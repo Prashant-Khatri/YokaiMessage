@@ -93,65 +93,90 @@ function page(){
     }
 
     return (
-        <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+        <div className="my-8 mx-4 sm:mx-6 md:mx-8 lg:mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-lg shadow-md w-full max-w-6xl overflow-x-hidden">
+          {/* Header */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center md:text-left text-gray-900">
+            User Dashboard
+          </h1>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={profileUrl}
-            disabled
-            className="input input-bordered w-full p-2 mr-2"
-          />
-          <Button onClick={copyToClipboard}>Copy</Button>
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <Switch
-          {...register('acceptMessage')}
-          checked={acceptMessages}
-          onCheckedChange={handleSwitchChange}
-          disabled={isSwitchLoading}
-        />
-        <span className="ml-2">
-          Accept Messages: {acceptMessages ? 'On' : 'Off'}
-        </span>
-      </div>
-      <Separator />
-
-      <Button
-        className="mt-4"
-        variant="outline"
-        onClick={(e) => {
-          e.preventDefault();
-          fetchMessages(true);
-        }}
-      >
-        {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <RefreshCcw className="h-4 w-4" />
-        )}
-      </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <div key={message._id as string}>
-              <MessageCard
-              message={message}
-              onMessageDelete={handleDeleteMessage} refresh={fetchMessages} username={username}
-            />
+          {/* Copy Profile Link Section */}
+          <div className="mb-6">
+            <h2 className="text-base sm:text-lg font-semibold mb-3 text-center md:text-left text-gray-800">
+              Copy Your Unique Link
+            </h2>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <input
+                type="text"
+                value={profileUrl}
+                disabled
+                className="input input-bordered w-full p-2 sm:p-3 text-sm sm:text-base rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-400 focus:outline-none"
+              />
+              <Button
+                onClick={copyToClipboard}
+                className="w-full sm:w-auto bg-slate-100 text-black font-medium hover:bg-slate-200 transition-all"
+                variant="outline"
+              >
+                Copy
+              </Button>
             </div>
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
-      </div>
+          </div>
 
-    </div>
+          {/* Switch Section */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-3">
+            <Switch
+              {...register('acceptMessage')}
+              checked={acceptMessages}
+              onCheckedChange={handleSwitchChange}
+              disabled={isSwitchLoading}
+            />
+            <span className="ml-0 sm:ml-2 text-sm sm:text-base">
+              Accept Messages:{' '}
+              <span className={acceptMessages ? 'text-green-600' : 'text-red-600'}>
+                {acceptMessages ? 'On' : 'Off'}
+              </span>
+            </span>
+          </div>
+
+          <Separator />
+
+          {/* Refresh Button */}
+          <div className="mt-4 flex justify-center md:justify-end">
+            <Button
+              className="mt-2 sm:mt-4 bg-gray-50 hover:bg-gray-100 text-gray-800"
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                fetchMessages(true);
+              }}
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCcw className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+
+          {/* Messages Grid */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <div key={message._id as string}>
+                  <MessageCard
+                    message={message}
+                    onMessageDelete={handleDeleteMessage}
+                    refresh={fetchMessages}
+                    username={username}
+                  />
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 text-sm sm:text-base">
+                No messages to display.
+              </p>
+            )}
+          </div>
+        </div>
     )
 }
 

@@ -33,48 +33,67 @@ function page(){
     }
   }
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-gray-800 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg p-6 sm:p-8 space-y-8 bg-white rounded-lg shadow-md">
+        {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6 text-gray-900">
             Join Yokai Message
           </h1>
-          <p className="mb-4">Sign in to start your anonymous adventure</p>
+          <p className="text-sm sm:text-base text-gray-600 mb-4">
+            Sign in to start your anonymous adventure
+          </p>
         </div>
+
+        {/* Form */}
         <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-                control={form.control}
-                name="identifier"
-                render={({ field }) => (
+              control={form.control}
+              name="identifier"
+              render={({ field }) => (
                 <FormItem>
-                <FormLabel>Email/Username</FormLabel>
-                    <FormControl>
-                        <Input placeholder="Email or Username" {...field} />
-                    </FormControl>
-                <FormMessage />
+                  <FormLabel>Email / Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your email or username"
+                      {...field}
+                      className="text-sm sm:text-base"
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-                )}
+              )}
             />
+
             <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
+              control={form.control}
+              name="password"
+              render={({ field }) => (
                 <FormItem>
-                <FormLabel>Password</FormLabel>
-                    <FormControl>
-                        <Input placeholder="Password" {...field} type="password" />
-                    </FormControl>
-                <FormMessage />
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your password"
+                      {...field}
+                      type="password"
+                      className="text-sm sm:text-base"
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-                )}
+              )}
             />
-            <Button type="submit" >
-              Signin
+
+            <Button
+              type="submit"
+              className="w-full py-2 sm:py-3 text-sm sm:text-base font-medium"
+            >
+              Sign In
             </Button>
-        </form>
+          </form>
         </Form>
-       </div>
+      </div>
     </div>
   )
 }

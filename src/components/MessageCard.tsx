@@ -73,13 +73,13 @@ function MessageCard({message,onMessageDelete,refresh,username} : any){
         <CardHeader className="flex flex-row justify-between">
             <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="w-fit mx-auto">Delete<X className="w-5 h-5"/></Button>
+        <Button variant="destructive" className="w-fit mx-auto">Delete</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently this message.
+            This action cannot be undone. This will permanently delete this message.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

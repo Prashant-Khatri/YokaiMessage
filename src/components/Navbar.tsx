@@ -12,27 +12,49 @@ function Navbar(){
     console.log("Print")
     console.log(session)
     return (
-        <nav className="p-4 md:p-6 shadow-md bg-gray-900 text-white">
-        <div className="container mx-auto flex flex-row md:flex-row justify-between items-center">
-            <a href="#" className="text-xl font-bold mb-4 md:mb-0">
-            Yokai Message
-            </a>
-            {session ? (
-            <>
-                <span className="mr-4">
-                Welcome, {user.username || user.email}
-                </span>
-                <Button onClick={() => signOut()} className="w-full md:w-auto bg-slate-100 text-black cursor-pointer" variant={"outline"}>
-                Logout
-                </Button>
-            </>
-            ) : (
-            <Link href="/sign-in">
-                <Button className="w-full md:w-auto bg-slate-100 text-black cursor-pointer" variant={"outline"}>Login</Button>
-            </Link>
-            )}
-        </div>
-    </nav>
+        <nav className="p-4 sm:p-5 md:p-6 shadow-md bg-gray-900 text-white">
+            <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+                {/* Logo */}
+                <a href="#" className="text-2xl sm:text-xl font-bold text-center sm:text-left">
+                Yokai Message
+                </a>
+
+                {/* Conditional Auth Section */}
+                {session ? (
+                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
+                    <span className="text-sm sm:text-base text-center sm:text-left">
+                    Welcome, {user.username || user.email}
+                    </span>
+                    <Button
+                    onClick={() => signOut()}
+                    className="w-full sm:w-auto bg-slate-100 text-black cursor-pointer"
+                    variant="outline"
+                    >
+                    Logout
+                    </Button>
+                </div>
+                ) : (
+                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
+                    <Link href="/sign-in" className="w-full sm:w-auto">
+                    <Button
+                        className="w-full sm:w-auto bg-slate-100 text-black cursor-pointer"
+                        variant="outline"
+                    >
+                        Login
+                    </Button>
+                    </Link>
+                    <Link href="/sign-up" className="w-full sm:w-auto">
+                    <Button
+                        className="w-full sm:w-auto bg-slate-100 text-black cursor-pointer"
+                        variant="outline"
+                    >
+                        SignUp
+                    </Button>
+                    </Link>
+                </div>
+                )}
+            </div>
+        </nav>
     );
 }
 
