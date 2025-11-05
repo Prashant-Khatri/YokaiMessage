@@ -33,8 +33,8 @@ import {
 } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-function MessageCard({message,onMessageDelete,refresh,username}){
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MessageCard({message,onMessageDelete,refresh,username} : any){
     const handleDeleteConfirm =async ()=>{
         const response=await axios.delete(`/api/delete-message/${message._id}`)
         toast.success(response.data.message)
@@ -46,7 +46,7 @@ function MessageCard({message,onMessageDelete,refresh,username}){
       }
     })
     const setReply=replyForm.setValue;
-    const onSubmit=async(data,id : string,email : string)=>{
+    const onSubmit=async(data : any,id : string,email : string)=>{
       try {
         const response=await axios.post(`/api/send-reply/${username}/message/${id}`,{
           email,

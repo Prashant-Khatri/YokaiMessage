@@ -13,7 +13,7 @@ export const authOptions : NextAuthOptions={
                 identifier : {label : "Email or Username",type : "text"},
                 password : {label : "Password",type : "password"}
             },
-            async authorize(credentials){
+            async authorize(credentials) : Promise<any>{
                 if (!credentials || !credentials?.identifier || !credentials?.password) {
                     throw new Error("Missing credentials");
                 }
