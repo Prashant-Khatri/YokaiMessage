@@ -34,7 +34,7 @@ import {
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-function MessageCard({message,onMessageDelete,refresh,username} : any){
+function MessageCard({message,onMessageDelete,refresh,username}){
     const handleDeleteConfirm =async ()=>{
         const response=await axios.delete(`/api/delete-message/${message._id}`)
         toast.success(response.data.message)
