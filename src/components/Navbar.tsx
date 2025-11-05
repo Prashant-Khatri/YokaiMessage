@@ -4,6 +4,8 @@ import Link from "next/link"
 import { useSession ,signOut} from "next-auth/react"
 import {User} from 'next-auth'
 import { Button } from "./ui/button"
+import Image from 'next/image';
+import DashboardIcon from "../../public/DashboardIcon.png"
 
 
 function Navbar(){
@@ -16,7 +18,7 @@ function Navbar(){
             <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
                 {/* Logo */}
                 <a href="#" className="text-2xl sm:text-xl font-bold text-center sm:text-left">
-                Yokai Message
+                    <Image src={DashboardIcon} alt="Yokai Message" className="w-36"></Image>
                 </a>
 
                 {/* Conditional Auth Section */}
