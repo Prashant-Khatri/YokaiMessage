@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import { Awaitable, NextAuthOptions } from "next-auth";
 import  CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
 import dbConnect from "@/lib/dbConnect";
@@ -10,10 +10,13 @@ export const authOptions : NextAuthOptions={
             id : "credentials",
             name : "Credentials",
             credentials : {
-                email : {label : "Email",type : "text"},
+                identifier : {label : "Email or Username",type : "text"},
                 password : {label : "Password",type : "password"}
             },
-            async authorize(credentials : any): Promise<any>{
+            async authorize(credentials){
+                if (!credentials || !credentials?.identifier || !credentials?.password) {
+                    throw new Error("Missing credentials");
+                }
                 await dbConnect()
                 try{
                     const user=await UserModel.findOne({
@@ -34,8 +37,11 @@ export const authOptions : NextAuthOptions={
                     }else{
                         throw new Error("Incorrect Password")
                     }
-                }catch(error : any){
-                    throw new Error(error)
+                }catch(error){
+                    if(error instanceof Error){
+                        throw new Error(error.message)
+                    }
+                    throw new Error("Authorization failed")
                 }
             }
         })

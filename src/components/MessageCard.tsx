@@ -1,11 +1,8 @@
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import {
   AlertDialog,
@@ -20,7 +17,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import dayjs from "dayjs";
 import { Button } from "./ui/button";
-import { X } from "lucide-react";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
@@ -35,7 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 function MessageCard({message,onMessageDelete,refresh,username} : any){
@@ -50,7 +46,7 @@ function MessageCard({message,onMessageDelete,refresh,username} : any){
       }
     })
     const setReply=replyForm.setValue;
-    const onSubmit=async(data : any,id : string,email : string)=>{
+    const onSubmit=async(data,id : string,email : string)=>{
       try {
         const response=await axios.post(`/api/send-reply/${username}/message/${id}`,{
           email,

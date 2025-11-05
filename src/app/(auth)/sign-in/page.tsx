@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { signInSchema } from "@/schema/signIn.schema"
 import { signIn } from "next-auth/react"
 
-function page(){
+function Page(){
   const router=useRouter()
   const form=useForm<z.infer<typeof signInSchema>>({
     resolver : zodResolver(signInSchema),
@@ -98,4 +98,4 @@ function page(){
   )
 }
 
-export default page
+export default Page;

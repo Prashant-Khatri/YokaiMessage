@@ -1,14 +1,14 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import {  Form,FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {  Form,FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import { messageSchema } from "@/schema/message.schema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod"
@@ -16,11 +16,7 @@ import { experimental_useObject as useObject } from '@ai-sdk/react'
 import { Separator } from "@/components/ui/separator";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch";
@@ -34,7 +30,6 @@ function SendMessagePage({ params }: { params: { username: string } }){
         "What’s a small thing you do that always brightens your day?",
         "If you could relive one moment from your past just for the joy of it, which would you choose?"
     ]
-    const [questions,setQuestions]=useState(initialMessages)
     console.log(params)
     const {username}=params;
     console.log(username)
@@ -55,7 +50,7 @@ function SendMessagePage({ params }: { params: { username: string } }){
       api: '/api/suggest-messages',
       schema: z.array(z.string()),
   });
-    const onSubmit=async(data : any)=>{
+    const onSubmit=async(data : z.infer<typeof messageSchema>)=>{
         console.log("Submitting message for user:", username, data);
         setIsSubmitting(true)
         try {
